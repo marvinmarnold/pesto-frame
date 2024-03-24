@@ -3,6 +3,7 @@
 import { Button, Frog } from "frog";
 import { handle } from "frog/vercel";
 import pestoBowlAbi from "./pestoBowlAbi.json";
+import { getBaseUrl } from "@/app/lib";
 
 type State = {
 	base: 'basil' | 'beet' | 'carrot' | 'tomato' | undefined;
@@ -117,8 +118,19 @@ app.frame("/prepare-img", async (c) => {
 	})
 
 	// invoke /api/img/create
-	// const {jobId} = await fetch("/api/img/create", {base: state.base, pasta: state.pasta, topping1: state.topping1, topping2: state.topping2})
-	const jobId = "uuid-1234-5678-91011-12131415161718" 
+	const url = getBaseUrl() + "api/image/create-job"
+	const response = await fetch(url, {
+		method: "POST",
+		body: JSON.stringify({
+			base: state.base!, 
+			pasta: state.pasta, 
+			topping1: state.topping1, 
+			topping2: state.topping2
+		})
+	})
+
+	const { jobId } = await response.json()
+	// const jobId = "uuid-1234-5678-91011-12131415161718" 
 	
 	// save jobId to state
 	const stateWithJob = await deriveState(async previousState => {
