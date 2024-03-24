@@ -159,9 +159,11 @@ app.frame("/prepare-img", async (c) => {
 					display: "flex",
 					flexWrap: "wrap",
 					fontSize: 55,
-					background: "black",
+					background:
+						"linear-gradient(to right, #334d2e, #598556, #3b5738)",
 					height: "100%",
 					width: "100%",
+					padding: "10px",
 				}}
 			>
 				<p style={{ whiteSpace: "normal" }}>
@@ -173,7 +175,7 @@ app.frame("/prepare-img", async (c) => {
 				<p>Check the status to see if it's ready to mint!</p>
 			</div>
 		),
-		// imageOptions: { width: 600, height: 600 },
+		imageOptions: { fonts: ["Saira Semi Condensed"] },
 		intents: [<Button value="refresh">Status Check</Button>],
 	});
 });
