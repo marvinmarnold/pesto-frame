@@ -1,6 +1,6 @@
 /** @jsxImportSource frog/jsx */
 
-import { Button, Frog } from "frog";
+import { Button, Frog, parseEther } from "frog";
 import { handle } from "frog/vercel";
 import { imgToIPFS } from "./openaiToIpfs";
 import pestoBowlAbi from "./pestoBowlAbi.json";
@@ -240,6 +240,7 @@ app.transaction("/mint/:cid", (c) => {
 	  functionName: "mint",
 	  to: "0xCA43892A4a06E78b01C47ba84f07D6b97d96F938",  // our deployed contract address
 	  args: [ipfsUri],
+	  value: parseEther("0.000001"),
 	});
   });
   
