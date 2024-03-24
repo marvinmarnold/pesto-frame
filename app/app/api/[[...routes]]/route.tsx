@@ -131,7 +131,7 @@ app.frame("/prepare-img", async (c) => {
 				style={{
 					color: "white",
 					display: "flex",
-					fontSize: 60,
+					fontSize: 30,
 					background: "black",
 					height: "100%",
 					width: "100%",
@@ -145,7 +145,7 @@ app.frame("/prepare-img", async (c) => {
 				</p>
 			</div>
 		),
-		imageOptions: { width: 600, height: 600 },
+		// imageOptions: { width: 600, height: 600 },
 		intents: [<Button value="refresh">Status Check</Button>],
 	});
 });
