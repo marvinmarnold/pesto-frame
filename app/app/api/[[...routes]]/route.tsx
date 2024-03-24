@@ -157,9 +157,8 @@ app.frame("/refresh-img", async (c) => {
 			action: "/mint-successful",
 			image: (
 				<div style={{ color: 'white', display: 'flex', fontSize: 60 }}>
-				  <p>Mint your {state.base} {state.pasta} with {state.topping1} and {state.topping2} pesto:
+				  <p>{ipfsUrl}: Mint your {state.base} {state.pasta} with {state.topping1} and {state.topping2} pesto:
 				  </p>
-				  <p>Image: {ipfsUrl}</p>
 				</div>
 			  ),
 			  intents: [<Button.Transaction target="/mint">Mint</Button.Transaction>],
