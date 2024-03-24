@@ -165,7 +165,7 @@ app.frame("/refresh-img", async (c) => {
 
 	if (status === "ready") {
 		// get ipfs uri and gateway url
-		const cid = await imgToIPFS(openAiUrl, "pinataApiKey");
+		const cid = await imgToIPFS(openAiUrl, process.env.PINATA_API_KEY!);
 		const ipfsUri = `ipfs://${cid}`;
 		const ipfsGatewayUrl = `https://amber-far-gazelle-427.mypinata.cloud/ipfs/${cid}`;
 
