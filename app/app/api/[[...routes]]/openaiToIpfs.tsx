@@ -22,7 +22,7 @@ export const imgToIPFS = async (imageUrl: string, pinataApiKey: string) => {
         },
       });
   
-      console.log(`Image uploaded to IPFS with CID: ${pinataResponse.data.IpfsHash}`);
+      return pinataResponse.data.IpfsHash;
     } catch (error) {
       console.error('Error uploading image to IPFS:', error);
     }

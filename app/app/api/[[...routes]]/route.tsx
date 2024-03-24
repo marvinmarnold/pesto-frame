@@ -165,9 +165,11 @@ app.frame("/refresh-img", async (c) => {
 
 	if (status === "ready") {
 		// get ipfs uri and gateway url
-		const cid = imgToIPFS(openAiUrl, "pinataApiKey");
+		const cid = await imgToIPFS(openAiUrl, "pinataApiKey");
 		const ipfsUri = `ipfs://${cid}`;
 		const ipfsGatewayUrl = `https://amber-far-gazelle-427.mypinata.cloud/ipfs/${cid}`;
+
+		console.log(ipfsGatewayUrl)
 
 		// save ipfs uri and gateway url to state
 		let state = await deriveState(async previousState => {
@@ -176,6 +178,8 @@ app.frame("/refresh-img", async (c) => {
 		state = await deriveState(async previousState => {
 			previousState.ipfsGatewayUrl = ipfsGatewayUrl as State['ipfsGatewayUrl']
 		})
+
+		console.log("we got here")
 
 		return c.res({
 			action: "/mint-successful",
@@ -207,6 +211,8 @@ app.frame("/mint-successful", (c) => {
 	const state = deriveState(previousState => {
 	})
 
+	console.log("mint-successful - got here.")
+
 	return c.res({
 		image: state.ipfsGatewayUrl || "default-image-url",
 		imageAspectRatio: "1:1",
@@ -215,6 +221,9 @@ app.frame("/mint-successful", (c) => {
 
 
 app.transaction("/mint/:cid", (c) => {
+
+	console.log("/mint/:cid - got here.")
+
 	// Access the path parameter
 	const cid = c.req.param('cid');
 	const ipfsUri = `ipfs://${cid}`;
