@@ -1,20 +1,20 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.21;
 
 import { CONTRACT_DEPLOYER } from "test/Constants.t.sol";
 import { Test } from "forge-std/Test.sol";
-import { PestoSauce } from "../src/PestoSauce.sol";
+import { PestoBowl } from "../src/PestoBowl.sol";
 
-contract PestoSauceTest is Test {
+contract PestoBowlTest is Test {
     // Test Contract
-    PestoSauce public pestoSauce;
+    PestoBowl public pestoBowl;
 
     // Test Storage
     address owner = address(this);
 
     function setUp() public {
-        // Deploy PestoSauce
+        // Deploy PestoBowl
         vm.prank(CONTRACT_DEPLOYER);
-        pestoSauce = new PestoSauce(CONTRACT_DEPLOYER, "Pesto Sauce Collection", "PSC");
+        pestoBowl = new PestoBowl(CONTRACT_DEPLOYER, "Pesto Bowl Collection", "PBC");
     }
 }

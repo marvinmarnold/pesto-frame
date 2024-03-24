@@ -3,7 +3,7 @@
 Implementation with URI verification to ensure that the URI came from the trusted backend:
 
 ```solidity
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.21;
 
 import { Ownable } from "src/dependencies/Ownable.sol";
@@ -12,7 +12,7 @@ import { ERC721 } from "solmate/tokens/ERC721.sol";
 import { SafeTransferLib, ERC20 } from "solmate/utils/SafeTransferLib.sol";
 import { Strings } from "openzeppelin-contracts/contracts/utils/Strings.sol";
 
-contract PestoSauce is Ownable, ERC721 {
+contract PestoBowl is Ownable, ERC721 {
     using ECDSA for bytes32;
 
     // Constants: no SLOAD to save gas

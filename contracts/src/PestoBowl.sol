@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.21;
 
 import { Ownable } from "src/dependencies/Ownable.sol";
@@ -6,7 +6,7 @@ import { IERC20 } from "src/interfaces/IERC20.sol";
 import { ERC721 } from "solmate/tokens/ERC721.sol";
 import { SafeTransferLib, ERC20 } from "solmate/utils/SafeTransferLib.sol";
 
-contract PestoSauce is Ownable, ERC721 {
+contract PestoBowl is Ownable, ERC721 {
     // Constants: no SLOAD to save gas
     uint256 public constant MINT_FEE = 0.000001 ether;
     address private constant CONTRACT_DEPLOYER = 0xb1349F61e587b23A2072C23C7d2F119eE6265d7f;
