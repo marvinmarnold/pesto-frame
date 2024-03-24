@@ -5,15 +5,19 @@ import { handle } from "frog/vercel";
 import nftAbi from "./nftAbi.json";
 
 type State = {
-	pasta: 'spaghetti' | 'bowtie' | 'fettuccine' | 'penne' | undefined;
 	base: 'basil' | 'beet' | 'carrot' | 'tomato' | undefined;
+	pasta: 'spaghetti' | 'bowtie' | 'fettuccine' | 'penne' | undefined;
+	topping1: 'parmesan' | 'pine' | 'pecorino' | 'jalapeno' | undefined;
+	topping2: 'parmesan' | 'pine' | 'pecorino' | 'jalapeno' | undefined;
 }
 
 const app = new Frog<{State: State}>({
 	basePath: "/api",
 	initialState: {
 		pasta: undefined,
-		base: undefined
+		base: undefined,
+		topping1: undefined,
+		topping2: undefined,
 	}
 });
 
@@ -28,7 +32,9 @@ app.frame("/", (c) => {
 		  ),
 		intents: [
 			<Button value="basil">Basil</Button>,
-			<Button value="beet">Beet</Button>
+			<Button value="tomato">Sun-dried Tomato</Button>,
+			<Button value="beet">Beet</Button>,
+			<Button value="carrot">Carrot</Button>,
 		],
 	});
 });
@@ -40,7 +46,7 @@ app.frame("/choose-pasta", (c) => {
 	})
 
 	return c.res({
-		action: "/pre-mint",
+		action: "/choose-topping1",
 		image: (
 			<div style={{ color: 'white', display: 'flex', fontSize: 60 }}>
 			  Select your pasta (base = {state.base}):
@@ -48,7 +54,53 @@ app.frame("/choose-pasta", (c) => {
 		  ),
 		intents: [
 			<Button value="spaghetti">Spaghetti</Button>,
-			<Button value="bowtie">Bowtie</Button>
+			<Button value="bowtie">Bowtie</Button>,
+			<Button value="penne">Penne</Button>,
+			<Button value="fettuccine">Fettuccine</Button>,
+		],
+	});
+});
+
+app.frame("/choose-topping1", (c) => {
+	const { buttonValue, deriveState } = c
+	const state = deriveState(previousState => {
+		previousState.pasta = buttonValue as State['pasta']
+	})
+
+	return c.res({
+		action: "/choose-topping2",
+		image: (
+			<div style={{ color: 'white', display: 'flex', fontSize: 60 }}>
+			  Select your first topping (base = {state.base}, pasta = {state.pasta}). All pesto comes with garlic, lemon, and olive oil.
+			</div>
+		  ),
+		intents: [
+			<Button value="parmesan">Parmesan</Button>,
+			<Button value="pine">Pine Nuts</Button>,
+			<Button value="pecorino">Pecorino Romano</Button>,
+			<Button value="jalapeno">Jalapeno</Button>,
+		],
+	});
+});
+
+app.frame("/choose-topping2", (c) => {
+	const { buttonValue, deriveState } = c
+	const state = deriveState(previousState => {
+		previousState.topping1 = buttonValue as State['topping1']
+	})
+
+	return c.res({
+		action: "/pre-mint",
+		image: (
+			<div style={{ color: 'white', display: 'flex', fontSize: 60 }}>
+			  Select your second topping (base = {state.base}, pasta = {state.pasta}, topping1 = {state.topping1}). All pesto comes with garlic, lemon, and olive oil.
+			</div>
+		  ),
+		intents: [
+			<Button value="parmesan">Parmesan</Button>,
+			<Button value="pine">Pine Nuts</Button>,
+			<Button value="pecorino">Pecorino Romano</Button>,
+			<Button value="jalapeno">Jalapeno</Button>,
 		],
 	});
 });
@@ -56,14 +108,14 @@ app.frame("/choose-pasta", (c) => {
 app.frame("/pre-mint", (c) => {
 	const { buttonValue, deriveState } = c
 	const state = deriveState(previousState => {
-		previousState.pasta = buttonValue as State['pasta']
+		previousState.topping2 = buttonValue as State['topping2']
 	})
 
 	return c.res({
 		action: "/mint-successful",
 		image: (
 			<div style={{ color: 'white', display: 'flex', fontSize: 60 }}>
-			  Mint your {state.base} {state.pasta} pesto NFT:
+			  Mint your {state.base} {state.pasta} with {state.topping1} and {state.topping2} pesto:
 			</div>
 		  ),
 		  intents: [<Button.Transaction target="/mint">Mint</Button.Transaction>],
