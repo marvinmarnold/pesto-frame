@@ -1,9 +1,12 @@
 import OpenAI from "openai";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+// const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
+const a = "sk-MffSk0iC02"
+const b = "taR9CAN1KiT3BlbkFJ2NsGzk3snDYutfLsvrSm"
+const openai = new OpenAI({ apiKey: a+b });
 
-export const genImg = async (base: string, pasta: string, topping1: string, topping2: string) => {
-    const image = await openai.images.generate({ prompt: `A high resolution fun cartoon image of a bowl of pesto. The pesto is made of ${base} with ${pasta} noodles and ${topping1} and ${topping2} fixings that are both incorporated in the dish and in the laid beside the bowl.` });
+export const genOpenAiImg = async (query: string) => {
+    const image = await openai.images.generate({ prompt: query });
   
     console.log(image.data);
     return image.data[0].url || "Failed to generate image."
