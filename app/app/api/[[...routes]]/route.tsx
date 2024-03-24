@@ -157,7 +157,7 @@ app.frame("/prepare-img", async (c) => {
 						"linear-gradient(to right, #334d2e, #598556, #3b5738)",
 					height: "100%",
 					width: "100%",
-					padding: "10px",
+					padding: "20px",
 				}}
 			>
 				<p style={{ whiteSpace: "normal" }}>
