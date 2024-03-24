@@ -133,6 +133,8 @@ app.frame("/prepare-img", async (c) => {
 					display: "flex",
 					fontSize: 60,
 					background: "black",
+					height: "100%",
+					width: "100%",
 				}}
 			>
 				<p>
@@ -143,6 +145,7 @@ app.frame("/prepare-img", async (c) => {
 				</p>
 			</div>
 		),
+		imageOptions: { width: 600, height: 600 },
 		intents: [<Button value="refresh">Status Check</Button>],
 	});
 });
@@ -153,10 +156,10 @@ app.frame("/refresh-img", async (c) => {
 
 	// marvin: query /api/img/get
 	// const {status, openAiUrl} = {status: "ready", openAiUrl: "https://oaidalleapiprodscus.blob.core.windows.net/private/org-QlV7bUj9CtoUf8UgTXPLL1JH/user-6prQk9LVzsOlvxHfrTfKpMQA/img-7UzFV3o2ity5lwWyityOBbEO.png?st=2024-03-24T06%3A52%3A38Z&se=2024-03-24T08%3A52%3A38Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2024-03-23T21%3A16%3A17Z&ske=2024-03-24T21%3A16%3A17Z&sks=b&skv=2021-08-06&sig=iaIFBZT9Tj8dM9avGxopIk9urT2/b2HKYdRr1/H7q7g%3D"}
-	const url = getBaseUrl() + "api/image/query-job?jobId=" + state.openAiJobId
-	const response = await fetch(url)
+	const url = getBaseUrl() + "api/image/query-job?jobId=" + state.openAiJobId;
+	const response = await fetch(url);
 
-	const { status, openAiUrl } = await response.json()
+	const { status, openAiUrl } = await response.json();
 	if (status === "ready") {
 		// get ipfs uri and gateway url
 		const pinataApiKey =
