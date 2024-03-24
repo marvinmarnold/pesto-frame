@@ -5,6 +5,13 @@ import { handle } from "frog/vercel";
 import { imgToIPFS } from "./openaiToIpfs";
 import pestoBowlAbi from "./pestoBowlAbi.json";
 import { getBaseUrl } from "@/app/lib";
+import { PinataFDK } from "pinata-fdk";
+
+const fdk = new PinataFDK({
+	pinata_jwt: process.env.PINATA_API_KEY || "",
+	pinata_gateway: "bronze-amused-elephant-301.mypinata.cloud",
+  });
+  
 
 type State = {
 	base: "basil" | "beet" | "carrot" | "tomato" | undefined;
@@ -42,6 +49,11 @@ app.frame("/", (c) => {
 	});
 });
 
+app.use(
+	"/choose-pasta",
+	fdk.analyticsMiddleware({ frameId: "choose-pasta" }),
+  );
+
 app.frame("/choose-pasta", (c) => {
 	const { buttonValue, deriveState } = c;
 	const state = deriveState((previousState) => {
@@ -59,6 +71,11 @@ app.frame("/choose-pasta", (c) => {
 		],
 	});
 });
+
+app.use(
+	"/choose-topping1",
+	fdk.analyticsMiddleware({ frameId: "choose-topping1" }),
+  );
 
 app.frame("/choose-topping1", (c) => {
 	const { buttonValue, deriveState } = c;
@@ -78,6 +95,11 @@ app.frame("/choose-topping1", (c) => {
 	});
 });
 
+app.use(
+	"/choose-topping2",
+	fdk.analyticsMiddleware({ frameId: "choose-topping2" }),
+  );
+
 app.frame("/choose-topping2", (c) => {
 	const { buttonValue, deriveState } = c;
 	const state = deriveState((previousState) => {
@@ -95,6 +117,11 @@ app.frame("/choose-topping2", (c) => {
 		],
 	});
 });
+
+app.use(
+	"/prepare-img",
+	fdk.analyticsMiddleware({ frameId: "prepare-img" }),
+  );
 
 app.frame("/prepare-img", async (c) => {
 	console.log("prepare: we got here");
@@ -146,6 +173,11 @@ app.frame("/prepare-img", async (c) => {
 		intents: [<Button value="refresh">Status Check</Button>],
 	});
 });
+
+app.use(
+	"/refresh-img",
+	fdk.analyticsMiddleware({ frameId: "prepare-img" }),
+  );
 
 app.frame("/refresh-img", async (c) => {
 	const { deriveState } = c;
@@ -210,6 +242,11 @@ app.frame("/refresh-img", async (c) => {
 		});
 	}
 });
+
+app.use(
+	"/mint-successful",
+	fdk.analyticsMiddleware({ frameId: "mint-successful" }),
+  );
 
 app.frame("/mint-successful", (c) => {
 	const { deriveState } = c;
