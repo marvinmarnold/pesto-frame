@@ -15,6 +15,6 @@ contract PestoSauceTest is Test {
     function setUp() public {
         // Deploy PestoSauce
         vm.prank(CONTRACT_DEPLOYER);
-        pestoSauce = new PestoSauce("Pesto Sauce Collection", "PSC");
+        pestoSauce = new PestoSauce(CONTRACT_DEPLOYER, "Pesto Sauce Collection", "PSC");
     }
 }

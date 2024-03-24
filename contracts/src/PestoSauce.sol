@@ -2,12 +2,11 @@
 pragma solidity ^0.8.21;
 
 import { Ownable } from "src/dependencies/Ownable.sol";
+import { IERC20 } from "src/interfaces/IERC20.sol";
 import { ERC721 } from "solmate/tokens/ERC721.sol";
 import { SafeTransferLib, ERC20 } from "solmate/utils/SafeTransferLib.sol";
 
 contract PestoSauce is Ownable, ERC721 {
-    using ECDSA for bytes32;
-
     // Constants: no SLOAD to save gas
     uint256 public constant MINT_FEE = 0.000001 ether;
     address private constant CONTRACT_DEPLOYER = 0xb1349F61e587b23A2072C23C7d2F119eE6265d7f;
@@ -30,7 +29,7 @@ contract PestoSauce is Ownable, ERC721 {
         if (msg.sender != CONTRACT_DEPLOYER) revert Unauthorized();
     }
 
-    function mintTo(address _recipient, string _URI) public payable returns (uint256 newTokenId) {
+    function mintTo(address _recipient, string memory _URI) public payable returns (uint256 newTokenId) {
         // Ensure the sender has paid the mint fee
         if (msg.value < MINT_FEE) revert InsufficientFunds();
 
@@ -52,7 +51,7 @@ contract PestoSauce is Ownable, ERC721 {
     }
 
     function tokenURI(uint256 _id) public view virtual override returns (string memory) {
-        return tokenURIs[_tokenId];
+        return tokenURIs[_id];
     }
 
     // Admin Functions
