@@ -230,6 +230,8 @@ app.transaction("/mint/:cid", (c) => {
 	// Access the path parameter
 	const cid = c.req.param('cid');
 	const ipfsUri = `ipfs://${cid}`;
+
+	console.log("[/mint/:cid]: ipfsUri: ", ipfsUri);
   
 	// Call contract with IPFS URI as paramater
 	return c.contract({
