@@ -40,6 +40,7 @@ contract PestoBowl is Ownable, ERC721 {
         // Increment the token ID and link it to the URI
         newTokenId = currentTokenId++;
         tokenURIs[newTokenId] = _URI;
+        tokenIds[_recipient].push(newTokenId);
 
         // Mint the token and emit the event
         _safeMint(_recipient, newTokenId);
