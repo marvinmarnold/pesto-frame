@@ -117,7 +117,7 @@ app.frame("/choose-topping2", (c) => {
 });
 
 app.frame("/prepare-img", async (c) => {
-	console.log("we got here");
+	console.log("prepare: we got here");
 	const { buttonValue, deriveState } = c
 	let state = await deriveState(async previousState => {
 		previousState.topping2 = buttonValue as State['topping2']
@@ -167,7 +167,8 @@ app.frame("/refresh-img", async (c) => {
 
 	if (status === "ready") {
 		// get ipfs uri and gateway url
-		const cid = await imgToIPFS(openAiUrl, "pinataApiKey");
+		const pinataApiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIyMWZjZTFiNS1iZTQwLTQ2ZjEtYmRmMy1iM2Q5NjgyOGEzZjAiLCJlbWFpbCI6ImN1Y3VwYWMxOTk2QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImlkIjoiRlJBMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfSx7ImlkIjoiTllDMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiI1OThkN2UwZWQzNzM0ZTgyZTUzYSIsInNjb3BlZEtleVNlY3JldCI6ImZjMjA5Y2RmN2RiMGUwZjU2MzM1YTQ3NTgzZjNhY2ZhYWUyYjMxNjJiNDM3ZDQ0NDc2NTc3NWI1NzkyN2ZhYzAiLCJpYXQiOjE3MTEyMjM5ODJ9.IvqVP12t0JF7QCdx1hb7PDCZ25xwthNwpNoRDlkfBIk';
+		const cid = await imgToIPFS(openAiUrl, pinataApiKey);
 		const ipfsUri = `ipfs://${cid}`;
 		const ipfsGatewayUrl = `https://amber-far-gazelle-427.mypinata.cloud/ipfs/${cid}`;
 
@@ -181,7 +182,7 @@ app.frame("/refresh-img", async (c) => {
 			previousState.ipfsGatewayUrl = ipfsGatewayUrl as State['ipfsGatewayUrl']
 		})
 
-		console.log("we got here")
+		console.log("refresh: we got here")
 
 		return c.res({
 			action: "/mint-successful",
