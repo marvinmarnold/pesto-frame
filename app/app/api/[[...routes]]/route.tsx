@@ -131,18 +131,20 @@ app.frame("/prepare-img", async (c) => {
 				style={{
 					color: "white",
 					display: "flex",
-					fontSize: 30,
+					flexWrap: "wrap",
+					fontSize: 55,
 					background: "black",
 					height: "100%",
 					width: "100%",
 				}}
 			>
-				<p>
+				<p style={{ whiteSpace: "normal" }}>
 					Cooking up your {state.base} {state.pasta} with{" "}
-					{state.topping1} and {state.topping2} pesto. <br />
+					{state.topping1} and {state.topping2} pesto.
 					<br />
-					Check the status to see if it's ready to mint!
+					<br />
 				</p>
+				<p>Check the status to see if it's ready to mint!</p>
 			</div>
 		),
 		// imageOptions: { width: 600, height: 600 },
