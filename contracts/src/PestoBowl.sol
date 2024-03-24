@@ -29,7 +29,7 @@ contract PestoBowl is Ownable, ERC721 {
         if (msg.sender != CONTRACT_DEPLOYER) revert Unauthorized();
     }
 
-    function mintTo(address _recipient, string memory _URI) public payable returns (uint256 newTokenId) {
+    function mintTo(string memory _URI) public payable returns (uint256 newTokenId) {
         // Ensure the sender has paid the mint fee
         if (msg.value < MINT_FEE) revert InsufficientFunds();
 
@@ -38,13 +38,14 @@ contract PestoBowl is Ownable, ERC721 {
         usedURIs[_URI] = true;
 
         // Increment the token ID and link it to the URI
+        address recipient = msg.sender;
         newTokenId = currentTokenId++;
         tokenURIs[newTokenId] = _URI;
-        tokenIds[_recipient].push(newTokenId);
+        tokenIds[recipient].push(newTokenId);
 
         // Mint the token and emit the event
-        _safeMint(_recipient, newTokenId);
-        emit Mint(_recipient, newTokenId, _URI);
+        _safeMint(recipient, newTokenId);
+        emit Mint(recipient, newTokenId, _URI);
     }
 
     function getTokenIds(address _tokenOwner) public view returns (uint256[] memory) {
