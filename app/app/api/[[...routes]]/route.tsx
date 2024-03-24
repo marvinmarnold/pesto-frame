@@ -3,12 +3,14 @@
 import { Button, Frog } from "frog";
 import { handle } from "frog/vercel";
 import nftAbi from "./nftAbi.json";
+import { genImg } from "@/app/openai";
 
 type State = {
 	base: 'basil' | 'beet' | 'carrot' | 'tomato' | undefined;
 	pasta: 'spaghetti' | 'bowtie' | 'fettuccine' | 'penne' | undefined;
 	topping1: 'parmesan' | 'pine' | 'pecorino' | 'jalapeno' | undefined;
 	topping2: 'parmesan' | 'pine' | 'pecorino' | 'jalapeno' | undefined;
+	imgUrl: string;
 }
 
 const app = new Frog<{State: State}>({
@@ -18,6 +20,7 @@ const app = new Frog<{State: State}>({
 		base: undefined,
 		topping1: undefined,
 		topping2: undefined,
+		imgUrl: "",
 	}
 });
 
@@ -105,17 +108,24 @@ app.frame("/choose-topping2", (c) => {
 	});
 });
 
-app.frame("/pre-mint", (c) => {
+app.frame("/pre-mint", async (c) => {
 	const { buttonValue, deriveState } = c
-	const state = deriveState(previousState => {
+	const state = await deriveState(async previousState => {
 		previousState.topping2 = buttonValue as State['topping2']
+		previousState.imgUrl = await genImg(
+			previousState.base!, 
+			previousState.pasta!, 
+			previousState.topping1!, 
+			previousState.topping2!)
 	})
 
 	return c.res({
 		action: "/mint-successful",
 		image: (
 			<div style={{ color: 'white', display: 'flex', fontSize: 60 }}>
-			  Mint your {state.base} {state.pasta} with {state.topping1} and {state.topping2} pesto:
+			  <p>Mint your {state.base} {state.pasta} with {state.topping1} and {state.topping2} pesto:
+			  </p>
+			  <p>Image: {state.imgUrl}</p>
 			</div>
 		  ),
 		  intents: [<Button.Transaction target="/mint">Mint</Button.Transaction>],
