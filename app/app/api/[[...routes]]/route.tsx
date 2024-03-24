@@ -50,11 +50,7 @@ app.frame("/choose-pasta", (c) => {
 
 	return c.res({
 		action: "/choose-topping1",
-		image: (
-			<div style={{ color: "white", display: "flex", fontSize: 60 }}>
-				Select your pasta (base = {state.base}):
-			</div>
-		),
+		image: "https://purple-actual-aardwolf-413.mypinata.cloud/ipfs/Qmbh4mhmqsjjNBLKSfRT4NaF3khBSaptatdDuyy6WJkwho",
 		intents: [
 			<Button value="spaghetti">Spaghetti</Button>,
 			<Button value="bowtie">Bowtie</Button>,
@@ -72,13 +68,7 @@ app.frame("/choose-topping1", (c) => {
 
 	return c.res({
 		action: "/choose-topping2",
-		image: (
-			<div style={{ color: "white", display: "flex", fontSize: 60 }}>
-				Select your first topping (base = {state.base}, pasta ={" "}
-				{state.pasta}). All pesto comes with garlic, lemon, and olive
-				oil.
-			</div>
-		),
+		image: "https://purple-actual-aardwolf-413.mypinata.cloud/ipfs/QmW8jHgkquVTewkXghLZBFbZFTqw9JQD9cQLyiA59Ji6NY",
 		intents: [
 			<Button value="parmesan">Parmesan</Button>,
 			<Button value="pine">Pine Nuts</Button>,
@@ -96,13 +86,7 @@ app.frame("/choose-topping2", (c) => {
 
 	return c.res({
 		action: "/prepare-img",
-		image: (
-			<div style={{ color: "white", display: "flex", fontSize: 60 }}>
-				Select your second topping (base = {state.base}, pasta ={" "}
-				{state.pasta}, topping1 = {state.topping1}). All pesto comes
-				with garlic, lemon, and olive oil.
-			</div>
-		),
+		image: "https://purple-actual-aardwolf-413.mypinata.cloud/ipfs/QmeH7MX6qavbuRu1eAAnSQzHdhQ3o2XaVkagLzNs82HEi7",
 		intents: [
 			<Button value="parmesan">Parmesan</Button>,
 			<Button value="pine">Pine Nuts</Button>,
@@ -143,14 +127,23 @@ app.frame("/prepare-img", async (c) => {
 	return c.res({
 		action: "/refresh-img",
 		image: (
-			<div style={{ color: "white", display: "flex", fontSize: 60 }}>
+			<div
+				style={{
+					color: "white",
+					display: "flex",
+					fontSize: 60,
+					background: "black",
+				}}
+			>
 				<p>
-					Check status for your {state.base} {state.pasta} with{" "}
-					{state.topping1} and {state.topping2} pesto:
+					Cooking up your {state.base} {state.pasta} with{" "}
+					{state.topping1} and {state.topping2} pesto. <br />
+					<br />
+					Check the status to see if it's ready to mint!
 				</p>
 			</div>
 		),
-		intents: [<Button value="refresh">Refresh</Button>],
+		intents: [<Button value="refresh">Status Check</Button>],
 	});
 });
 
