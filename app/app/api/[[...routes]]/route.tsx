@@ -6,11 +6,11 @@ import pestoBowlAbi from "./pestoBowlAbi.json";
 import { getBaseUrl } from "@/app/lib";
 import { PinataFDK } from "pinata-fdk";
 
-
 const fdk = new PinataFDK({
-    pinata_jwt: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIyMWZjZTFiNS1iZTQwLTQ2ZjEtYmRmMy1iM2Q5NjgyOGEzZjAiLCJlbWFpbCI6ImN1Y3VwYWMxOTk2QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImlkIjoiRlJBMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfSx7ImlkIjoiTllDMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiI1OThkN2UwZWQzNzM0ZTgyZTUzYSIsInNjb3BlZEtleVNlY3JldCI6ImZjMjA5Y2RmN2RiMGUwZjU2MzM1YTQ3NTgzZjNhY2ZhYWUyYjMxNjJiNDM3ZDQ0NDc2NTc3NWI1NzkyN2ZhYzAiLCJpYXQiOjE3MTEyMjM5ODJ9.IvqVP12t0JF7QCdx1hb7PDCZ25xwthNwpNoRDlkfBIk",
-    pinata_gateway: "amber-far-gazelle-427.mypinata.cloud"}, 
-);
+	pinata_jwt:
+		"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIyMWZjZTFiNS1iZTQwLTQ2ZjEtYmRmMy1iM2Q5NjgyOGEzZjAiLCJlbWFpbCI6ImN1Y3VwYWMxOTk2QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImlkIjoiRlJBMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfSx7ImlkIjoiTllDMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiI1OThkN2UwZWQzNzM0ZTgyZTUzYSIsInNjb3BlZEtleVNlY3JldCI6ImZjMjA5Y2RmN2RiMGUwZjU2MzM1YTQ3NTgzZjNhY2ZhYWUyYjMxNjJiNDM3ZDQ0NDc2NTc3NWI1NzkyN2ZhYzAiLCJpYXQiOjE3MTEyMjM5ODJ9.IvqVP12t0JF7QCdx1hb7PDCZ25xwthNwpNoRDlkfBIk",
+	pinata_gateway: "amber-far-gazelle-427.mypinata.cloud",
+});
 
 type State = {
 	base: "basil" | "beet" | "carrot" | "tomato" | undefined;
@@ -48,10 +48,7 @@ app.frame("/", (c) => {
 	});
 });
 
-app.use(
-	"/choose-pasta",
-	fdk.analyticsMiddleware({ frameId: "choose-pasta" }),
-  );
+app.use("/choose-pasta", fdk.analyticsMiddleware({ frameId: "choose-pasta" }));
 
 app.frame("/choose-pasta", (c) => {
 	const { buttonValue, deriveState } = c;
@@ -73,8 +70,8 @@ app.frame("/choose-pasta", (c) => {
 
 app.use(
 	"/choose-topping1",
-	fdk.analyticsMiddleware({ frameId: "choose-topping1" }),
-  );
+	fdk.analyticsMiddleware({ frameId: "choose-topping1" })
+);
 
 app.frame("/choose-topping1", (c) => {
 	const { buttonValue, deriveState } = c;
@@ -96,8 +93,8 @@ app.frame("/choose-topping1", (c) => {
 
 app.use(
 	"/choose-topping2",
-	fdk.analyticsMiddleware({ frameId: "choose-topping2" }),
-  );
+	fdk.analyticsMiddleware({ frameId: "choose-topping2" })
+);
 
 app.frame("/choose-topping2", (c) => {
 	const { buttonValue, deriveState } = c;
@@ -117,10 +114,7 @@ app.frame("/choose-topping2", (c) => {
 	});
 });
 
-app.use(
-	"/prepare-img",
-	fdk.analyticsMiddleware({ frameId: "prepare-img" }),
-  );
+app.use("/prepare-img", fdk.analyticsMiddleware({ frameId: "prepare-img" }));
 
 app.frame("/prepare-img", async (c) => {
 	console.log("prepare: we got here");
@@ -175,15 +169,11 @@ app.frame("/prepare-img", async (c) => {
 				<p>Check the status to see if it's ready to mint!</p>
 			</div>
 		),
-		imageOptions: { fonts: ["Saira Semi Condensed"] },
 		intents: [<Button value="refresh">Status Check</Button>],
 	});
 });
 
-app.use(
-	"/refresh-img",
-	fdk.analyticsMiddleware({ frameId: "prepare-img" }),
-  );
+app.use("/refresh-img", fdk.analyticsMiddleware({ frameId: "prepare-img" }));
 
 app.frame("/refresh-img", async (c) => {
 	const { deriveState } = c;
@@ -197,10 +187,11 @@ app.frame("/refresh-img", async (c) => {
 	const { status, openAiUrl } = await response.json();
 	if (status === "ready") {
 		// get ipfs uri and gateway url using pinata fdk
-		const ipfsGatewayUrl = await fdk.convertUrlToIPFS("https://oaidalleapiprodscus.blob.core.windows.net/private/org-QlV7bUj9CtoUf8UgTXPLL1JH/user-6prQk9LVzsOlvxHfrTfKpMQA/img-PCVqd79Hy8f27N8bLKYrEwFX.png?st=2024-03-24T08%3A03%3A00Z&se=2024-03-24T10%3A03%3A00Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2024-03-23T21%3A49%3A22Z&ske=2024-03-24T21%3A49%3A22Z&sks=b&skv=2021-08-06&sig=12de%2Bkw3qyyO9qR82OiwsVhmmMgikOjP/j9zsFC1Jrc%3D");
+		const ipfsGatewayUrl = await fdk.convertUrlToIPFS(
+			"https://oaidalleapiprodscus.blob.core.windows.net/private/org-QlV7bUj9CtoUf8UgTXPLL1JH/user-6prQk9LVzsOlvxHfrTfKpMQA/img-PCVqd79Hy8f27N8bLKYrEwFX.png?st=2024-03-24T08%3A03%3A00Z&se=2024-03-24T10%3A03%3A00Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2024-03-23T21%3A49%3A22Z&ske=2024-03-24T21%3A49%3A22Z&sks=b&skv=2021-08-06&sig=12de%2Bkw3qyyO9qR82OiwsVhmmMgikOjP/j9zsFC1Jrc%3D"
+		);
 		const cid = ipfsGatewayUrl!.split("/ipfs/")[1];
 		const ipfsUri = `ipfs://${cid}`;
-
 
 		// save ipfs uri and gateway url to state
 		let state = await deriveState(async (previousState) => {
@@ -208,7 +199,7 @@ app.frame("/refresh-img", async (c) => {
 		});
 		state = await deriveState(async (previousState) => {
 			previousState.ipfsGatewayUrl =
-			ipfsGatewayUrl as State["ipfsGatewayUrl"];
+				ipfsGatewayUrl as State["ipfsGatewayUrl"];
 		});
 
 		console.log("refresh: we got here");
@@ -248,8 +239,8 @@ app.frame("/refresh-img", async (c) => {
 
 app.use(
 	"/mint-successful",
-	fdk.analyticsMiddleware({ frameId: "mint-successful" }),
-  );
+	fdk.analyticsMiddleware({ frameId: "mint-successful" })
+);
 
 app.frame("/mint-successful", (c) => {
 	const { deriveState } = c;
