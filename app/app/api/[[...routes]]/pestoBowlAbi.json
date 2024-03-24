@@ -324,17 +324,12 @@
 	{
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "_recipient",
-				"type": "address"
-			},
-			{
 				"internalType": "string",
 				"name": "_URI",
 				"type": "string"
 			}
 		],
-		"name": "mintTo",
+		"name": "mint",
 		"outputs": [
 			{
 				"internalType": "uint256",

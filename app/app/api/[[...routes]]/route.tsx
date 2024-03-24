@@ -2,6 +2,7 @@
 
 import { Button, Frog } from "frog";
 import { handle } from "frog/vercel";
+import { imgToIPFS } from "./openaiToIpfs";
 import pestoBowlAbi from "./pestoBowlAbi.json";
 import { getBaseUrl } from "@/app/lib";
 
@@ -11,6 +12,8 @@ type State = {
 	topping1: 'parmesan' | 'pine' | 'pecorino' | 'jalapeno' | undefined;
 	topping2: 'parmesan' | 'pine' | 'pecorino' | 'jalapeno' | undefined;
 	openAiJobId: string | undefined;
+	ipfsUri: string | undefined;
+	ipfsGatewayUrl: string | undefined;
 }
 
 const app = new Frog<{ State: State }>({
@@ -21,6 +24,8 @@ const app = new Frog<{ State: State }>({
 		topping1: undefined,
 		topping2: undefined,
 		openAiJobId: undefined,
+		ipfsUri: undefined,
+		ipfsGatewayUrl: undefined,
 	}
 });
 
@@ -113,7 +118,7 @@ app.frame("/choose-topping2", (c) => {
 
 app.frame("/prepare-img", async (c) => {
 	const { buttonValue, deriveState } = c
-	const state = await deriveState(async previousState => {
+	let state = await deriveState(async previousState => {
 		previousState.topping2 = buttonValue as State['topping2']
 	})
 
@@ -133,9 +138,10 @@ app.frame("/prepare-img", async (c) => {
 	// const jobId = "uuid-1234-5678-91011-12131415161718" 
 	
 	// save jobId to state
-	const stateWithJob = await deriveState(async previousState => {
+	state = await deriveState(async previousState => {
 		previousState.openAiJobId = jobId as State['openAiJobId']
 	})
+
 
 	return c.res({
 		action: "/refresh-img",
@@ -150,30 +156,37 @@ app.frame("/prepare-img", async (c) => {
 });
 
 app.frame("/refresh-img", async (c) => {
-	const { buttonValue, deriveState } = c
+	const { deriveState } = c
 	const state = deriveState(previousState => {
 	})
 	
 	// marvin: query /api/img/get
 	const {status, openAiUrl} = {status: "ready", openAiUrl: "https://oaidalleapiprodscus.blob.core.windows.net/private/org-QlV7bUj9CtoUf8UgTXPLL1JH/user-6prQk9LVzsOlvxHfrTfKpMQA/img-SbDNFMgGapPu3iBe80vRM3xj.png?st=2024-03-24T03%3A10%3A03Z&se=2024-03-24T05%3A10%3A03Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2024-03-23T21%3A32%3A19Z&ske=2024-03-24T21%3A32%3A19Z&sks=b&skv=2021-08-06&sig=62ZsP/z%2BcFBSP%2BvQ%2BQb6VhqMPoaI/ZgNvASfFIzavi0%3D"}
 
-	// if status is ready then show mint option
-	// else show refresh button
 	if (status === "ready") {
-		// adam: do IPFS stuff
-		const ipfsUrl = "https:/foo.com/ipfs/1234"
+		// get ipfs uri and gateway url
+		const cid = imgToIPFS(openAiUrl, "pinataApiKey");
+		const ipfsUri = `ipfs://${cid}`;
+		const ipfsGatewayUrl = `https://amber-far-gazelle-427.mypinata.cloud/ipfs/${cid}`;
 
-		// adam: save IPFS to frame state
+		// save ipfs uri and gateway url to state
+		let state = await deriveState(async previousState => {
+			previousState.ipfsUri = ipfsUri as State['ipfsUri']
+		})
+		state = await deriveState(async previousState => {
+			previousState.ipfsGatewayUrl = ipfsGatewayUrl as State['ipfsGatewayUrl']
+		})
 
 		return c.res({
 			action: "/mint-successful",
 			image: (
 				<div style={{ color: 'white', display: 'flex', fontSize: 60 }}>
-				  <p>{ipfsUrl}: Mint your {state.base} {state.pasta} with {state.topping1} and {state.topping2} pesto:
+				  <p>{ipfsUri}: Mint your {state.base} {state.pasta} with {state.topping1} and {state.topping2} pesto:
 				  </p>
+				  <p>Image: {ipfsGatewayUrl}</p>
 				</div>
 			  ),
-			  intents: [<Button.Transaction target="/mint">Mint</Button.Transaction>],
+			  intents: [<Button.Transaction target={`/mint/${cid}`}>Mint</Button.Transaction>],
 		});
 	} else {
 		return c.res({
@@ -190,23 +203,31 @@ app.frame("/refresh-img", async (c) => {
 })
 
 app.frame("/mint-successful", (c) => {
+	const { deriveState } = c
+	const state = deriveState(previousState => {
+	})
+
 	return c.res({
-		// pull image from state
-		image: "https://dweb.mypinata.cloud/ipfs/QmUx3kQH4vR2t7mTmW3jHJgJgJGxjoBsMxt6z1fkZEHyHJ",
+		image: state.ipfsGatewayUrl || "default-image-url",
 		imageAspectRatio: "1:1",
 	});
 });
 
-app.transaction("/mint", (c) => {
-	// not marvin: read ipfs image from state
-	// supply to minting
-	return c.contract({
-		abi: pestoBowlAbi,
-		chainId: "eip155:84532",
-		functionName: "mint",
-		to: "0x8e51c3cdd9dB0c4E6714c1C48cDA44F1d4c88D59",
-	});
-});
 
+app.transaction("/mint/:cid", (c) => {
+	// Access the path parameter
+	const cid = c.req.param('cid');
+	const ipfsUri = `ipfs://${cid}`;
+  
+	// Call contract with IPFS URI as paramater
+	return c.contract({
+	  abi: pestoBowlAbi,
+	  chainId: "eip155:84532", // base sepolia
+	  functionName: "mint",
+	  to: "0xCA43892A4a06E78b01C47ba84f07D6b97d96F938",  // our deployed contract address
+	  args: [ipfsUri],
+	});
+  });
+  
 export const GET = handle(app);
 export const POST = handle(app);
