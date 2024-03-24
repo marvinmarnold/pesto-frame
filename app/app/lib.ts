@@ -1,4 +1,3 @@
-// export const SUPABASE_URL = 'https://wcjajyllcpporgkwgwqv.supabase.co'
 export const SUPABASE_URL = 'https://wcjajyllcpporgkwgwqv.supabase.co'
 export const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndjamFqeWxsY3Bwb3Jna3dnd3F2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTEyNTk1MTMsImV4cCI6MjAyNjgzNTUxM30.i_ZmEc3yCr7DbgWnCjXXpW4ETQHTRAe3RMDNgqRCPzc'
 
